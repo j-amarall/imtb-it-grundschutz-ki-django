@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}IMTB IT-Grundschutz KI{% endblock %}
+
+{% block content %}
+
+<h1 class="text-accent">🔒 IMTB IT-Grundschutz KI</h1>
+
+{% if user.is_authenticated %}
+    <p>
+        Willkommen beim internen KI-Assistenten für den <strong>BSI IT-Grundschutz</strong>.
+    </p>
+
+    <p>
+        <a class="button-primary" href="/chat/">➡️ Zum Chat</a>
+    </p>
+{% else %}
+    <p>
+        Dies ist ein interner KI-Assistent der IMTB. Bitte melde dich an.
+    </p>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}Registrierung – IMTB IT-Grundschutz KI{% endblock %}
+
+{% block content %}
+
+<h1 class="text-accent">📝 Registrierung</h1>
+
+<p class="notice">
+    Nach der Registrierung wird Ihr Zugang durch einen Administrator geprüft und freigeschaltet.
+    Sie erhalten erst danach Zugriff auf den Assistenten.
+</p>
+
+<form method="post" class="auth-form">
+    {% csrf_token %}
+
+    <div class="form-group">
+        <label for="id_email">E-Mail-Adresse</label>
+        {{ form.email }}
+        {% if form.email.errors %}
+            <div class="flash">
+                {% for error in form.email.errors %}
+                    <p class="flash__error">{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="form-group">
+        <label for="id_password1">Passwort</label>
+        {{ form.password1 }}
+        {% if form.password1.errors %}
+            <div class="flash">
+                {% for error in form.password1.errors %}
+                    <p class="flash__error">{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="form-group">
+        <label for="id_password2">Passwort wiederholen</label>
+        {{ form.password2 }}
+        {% if form.password2.errors %}
+            <div class="flash">
+                {% for error in form.password2.errors %}
+                    <p class="flash__error">{{ error }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+
+    <button type="submit" class="button-primary">
+        Registrieren
+    </button>
+</form>
+
+<p style="margin-top: 16px;">
+    Bereits registriert?
+    <a href="{% url 'login' %}">Zur Anmeldung</a>
+</p>
+
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Login – IMTB IT-Grundschutz KI{% endblock %}
+
+{% block content %}
+
+<h1 class="text-accent">🔐 Login</h1>
+
+{% if form.errors %}
+    <p style="color: red;">
+        E-Mail oder Passwort falsch.
+    </p>
+{% endif %}
+
+<form method="post">
+    {% csrf_token %}
+
+    <p>
+        <label for="id_username">E-Mail</label><br>
+        {{ form.username }}
+    </p>
+
+    <p>
+        <label for="id_password">Passwort</label><br>
+        {{ form.password }}
+    </p>
+
+    <button class="button-primary" type="submit">Login</button>
+</form>
+
+<hr>
+
+<p>
+    <a href="/">Zurück zur Startseite</a>
+</p>
+
+{% endblock %}

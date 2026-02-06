@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}Login – IMTB IT-Grundschutz KI{% endblock %}
+
+{% block content %}
+
+<h1 class="text-accent">🔐 Anmeldung</h1>
+
+<p class="notice">
+    Bitte melden Sie sich mit Ihrer E-Mail-Adresse an.
+</p>
+
+{% if messages %}
+    <div class="flash">
+        {% for message in messages %}
+            <p class="flash__error">{{ message }}</p>
+        {% endfor %}
+    </div>
+{% endif %}
+
+<form method="post" class="auth-form">
+    {% csrf_token %}
+
+    <div class="form-group">
+        <label for="id_username">E-Mail-Adresse</label>
+        {{ form.username }}
+    </div>
+
+    <div class="form-group">
+        <label for="id_password">Passwort</label>
+        {{ form.password }}
+    </div>
+
+    {% if form.non_field_errors %}
+        <div class="flash">
+            {% for error in form.non_field_errors %}
+                <p class="flash__error">{{ error }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <button type="submit" class="button-primary">
+        Anmelden
+    </button>
+</form>
+
+<p style="margin-top: 16px;">
+    Noch kein Konto?
+    <a href="{% url 'signup' %}">Jetzt registrieren</a>
+</p>
+
+{% endblock %}

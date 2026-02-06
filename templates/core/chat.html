@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block title %}IMTB IT-Grundschutz KI{% endblock %}
+
+{% block content %}
+
+<h1 class="text-accent">💬 IMTB IT-Grundschutz KI</h1>
+
+<div class="notice">
+  ⚠️ <strong>Hinweis:</strong> Bitte keine personenbezogenen oder vertraulichen Informationen eingeben.
+</div>
+
+<!-- Lade-Overlay -->
+<div id="loading-overlay" class="loading-overlay" aria-hidden="true">
+  <div class="loading-card">
+    <div class="spinner"></div>
+    <p style="margin: 12px 0 0 0;">Anfrage wird verarbeitet…</p>
+    <p style="margin: 6px 0 0 0; font-size: 13px; opacity: 0.8;">Bitte einen Moment Geduld.</p>
+  </div>
+</div>
+
+{% if user_input %}
+  <div class="chatbox">
+    <div class="msg msg--user">
+      <div class="msg__role">Sie</div>
+      <div class="msg__content">{{ user_input }}</div>
+    </div>
+
+    {% if hint %}
+      <div class="msg" style="border: 1px solid rgba(10,34,84,0.25); background: rgba(10,34,84,0.03);">
+        <div class="msg__role">Hinweis</div>
+        <div class="msg__content">{{ hint|linebreaksbr }}</div>
+      </div>
+    {% endif %}
+
+    <div class="msg msg--assistant">
+      <div class="msg__role">Antwort</div>
+      <div class="msg__content">
+        {% if answer %}
+          {{ answer|linebreaksbr }}
+        {% else %}
+          <em>Keine Antwort erhalten.</em>
+        {% endif %}
+      </div>
+    </div>
+
+    {% if reasoning %}
+      <details style="margin-top: 10px;">
+        <summary style="cursor:pointer; font-weight:600;">Gedanken / Reasoning anzeigen</summary>
+        <div class="msg" style="margin-top: 8px;">
+          <div class="msg__content">{{ reasoning|linebreaksbr }}</div>
+        </div>
+      </details>
+    {% endif %}
+  </div>
+{% endif %}
+
+<form method="post" id="chat-form" class="chatform">
+  {% csrf_token %}
+  <textarea
+    name="user_input"
+    id="chat-input"
+    class="chatform__input"
+    rows="3"
+    placeholder="Ihre Frage…"
+    required></textarea>
+
+  <button type="submit" class="button-primary" id="send-btn">Senden</button>
+</form>
+
+<script>
+(function () {
+  const overlay = document.getElementById("loading-overlay");
+  const chatForm = document.getElementById("chat-form");
+  const sendBtn = document.getElementById("send-btn");
+  const input = document.getElementById("chat-input");
+
+  function showLoading() {
+    overlay.classList.add("is-visible");
+    overlay.setAttribute("aria-hidden", "false");
+    sendBtn.disabled = true;
+    sendBtn.textContent = "Bitte warten…";
+  }
+
+  chatForm.addEventListener("submit", function () {
+    showLoading();
+  });
+
+  input.addEventListener("keydown", function (e) {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      if (input.value.trim().length > 0) chatForm.requestSubmit();
+    }
+  });
+})();
+</script>
+
+{% endblock %}
